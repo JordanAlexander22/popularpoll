@@ -25,7 +25,10 @@ const userSchema = new Schema(
 			required: true,
 			minlength: 5
         },
-
+        created: {
+            type: Date,
+            default: Date.now()
+        },
         polls: [{type: mongoose.Schema.Types.ObjectId, ref: 'Poll'}]
     },
     
@@ -37,6 +40,8 @@ const userSchema = new Schema(
 
 );
 
+let SALT_WORK_FACTOR = 6;
+// cannot use arrow function here 
 userSchema.pre('save', async function save(next) {
 	if (!this.isModified('password')) return next();
 	try {
@@ -45,7 +50,7 @@ userSchema.pre('save', async function save(next) {
 		return next();
 	} catch (err) {
 		return next(err);
-	}
+	} 
 });
 
 userSchema.methods.validatePassword = async function validatePassword(data) {
