@@ -40,7 +40,7 @@ const userSchema = new Schema(
 
 );
 
-let SALT_WORK_FACTOR = 6;
+let SALT_WORK_FACTOR = 5;
 // cannot use arrow function here 
 userSchema.pre('save', async function save(next) {
 	if (!this.isModified('password')) return next();

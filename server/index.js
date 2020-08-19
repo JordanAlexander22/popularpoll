@@ -10,7 +10,9 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT;
 const db = require('./models');
+
 const usersRouter = require('./routes/users')
+const pollsRouter = require('./routes/polls')
 
 
 app.use(cors()); 
@@ -22,6 +24,7 @@ app.get('/', (req, res) => res.json({hello: 'world'}))
 
 
 app.use('/users', usersRouter)
+app.use('/polls', pollsRouter)
 
 
 
