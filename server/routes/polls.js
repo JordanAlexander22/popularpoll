@@ -11,12 +11,12 @@ router.route('/').get((req, res) => {
 
 
 router.route('/add').post((req,res) => {
-    //const {id} = req.decode 
-    const questions = req.body.question;
+    //const {id} = req.decode
+    const question = req.body.question;
     const options = req.body.options;
 
     const newPoll = new Poll ({
-        questions,
+        question,
         options: options.map(option => ({ option, votes: 0 })),
     })
 
