@@ -13,7 +13,7 @@ const signToken = userID =>{
     }, "shhhh its a secret", {expiresIn : "1h"})
   }
 
-
+//register
 router.post('/register',(req, res) => {
     const {username, password, email} = req.body;
     //check if user exists
@@ -34,6 +34,8 @@ router.post('/register',(req, res) => {
     })
   })
 
+
+//login
 router.post('/login', passport.authenticate('local', {session : false}), (req,res)=> {
   if(req.isAuthenticated()){
     const {_id, username, email} = req.user;
@@ -43,6 +45,12 @@ router.post('/login', passport.authenticate('local', {session : false}), (req,re
   }
 })
 
+//log out
+router.get('/logout', passport.authenticate('jwt', {session: false}), (req,res) => {
+res.clearCookie('access_token');
+res.json({user: {username: '', email: ''}, success : true});
+}
+)
 
 
 
