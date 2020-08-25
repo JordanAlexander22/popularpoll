@@ -1,4 +1,6 @@
 const router = require('express').Router();
+const passport = require('passport');
+const passportConfig = require('../config/passport')
 
 let Poll = require('../models/Polls');
 
@@ -10,10 +12,9 @@ router.route('/').get((req, res) => {
 })
 
 
-router.route('/add').post((req,res) => {
+router.route('/add',passport.authenticate('jwt', {session: false}) ).post((req,res) => {
     //const {id} = req.decode
-    const question = req.body.question;
-    const options = req.body.options;
+   const {question, options} = req.body;
 
     const newPoll = new Poll ({
         question,
