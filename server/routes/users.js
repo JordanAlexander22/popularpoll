@@ -6,12 +6,15 @@ const Jwt = require('jsonwebtoken');
 
 let User = require('../models/Users')
 
-const signToken = userID =>{
-  return Jwt.sign({
-      iss : 'Jordan',
-      sub : userID
-    }, "shhhh its a secret", {expiresIn : "1h"})
-  }
+// const signToken = userID =>{
+//   return Jwt.sign({
+//       iss : 'Jordan',
+//       sub : userID
+//     }, process.env.TOKEN_SECRET, {expiresIn : "1h"})
+//   }
+
+
+
 
 //register
 router.post('/register',(req, res) => {
@@ -36,13 +39,17 @@ router.post('/register',(req, res) => {
 
 
 //login
-router.post('/login', passport.authenticate('local', {session : false}), (req,res)=> {
+router.post('/login', async (req,res)=> {
   if(req.isAuthenticated()){
     const {_id, username, email} = req.user;
     const token = signToken(_id);
     res.cookie('access_token', token, {httpOnly: true, sameSite: true});
     res.status(200).json({isAuthenticated : true, user : {username, email}})
   }
+
+  //token
+const token = Jwt.sign({_id: User._id}, process.env.TOKEN_SECRET);
+  res.header('auth-token', token).send(token);
 })
 
 //log out

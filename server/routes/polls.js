@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const passport = require('passport');
 const passportConfig = require('../config/passport')
+const auth = require('../auth')
 
 let Poll = require('../models/Polls');
 
@@ -12,8 +13,8 @@ router.route('/').get((req, res) => {
 })
 
 
-router.route('/add',passport.authenticate('jwt', {session: false}) ).post((req,res) => {
-    //const {id} = req.decode
+router.post('/add',auth,(req,res, next) => {
+    //const {id} = req.decoded
    const {question, options} = req.body;
 
     const newPoll = new Poll ({
@@ -24,6 +25,8 @@ router.route('/add',passport.authenticate('jwt', {session: false}) ).post((req,r
     newPoll.save()
     .then(() => res.json('Test Poll working'))
     .catch(() => res.status(400).json('error'))
-}) 
+})
+
+
 
 module.exports = router
