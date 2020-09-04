@@ -43,9 +43,9 @@ router.post('/login', async (req,res)=> {
   if(req.isAuthenticated()){
     const {_id, username, email} = req.user;
     const token = signToken(_id);
-    res.cookie('access_token', token, {httpOnly: true, sameSite: true});
+    res.header('access_token', token, {httpOnly: true, sameSite: true});
     res.status(200).json({isAuthenticated : true, user : {username, email}})
-  }
+  } 
 
   //token
 const token = Jwt.sign({_id: User._id}, process.env.TOKEN_SECRET);
