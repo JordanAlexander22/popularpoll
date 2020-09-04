@@ -13,7 +13,7 @@ router.route('/').get((req, res) => {
 })
 
 
-router.post('/add',auth,(req,res, next) => {
+router.post('/add',auth,(req,res,next) => {
     //const {id} = req.decoded
    const {question, options} = req.body;
 
@@ -25,6 +25,7 @@ router.post('/add',auth,(req,res, next) => {
     newPoll.save()
     .then(() => res.json('Test Poll working'))
     .catch(() => res.status(400).json('error'))
+    next()
 })
 
 

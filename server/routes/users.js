@@ -42,9 +42,9 @@ router.post('/register',(req, res) => {
 router.post('/login', async (req,res)=> {
   if(req.isAuthenticated()){
     const {_id, username, email} = req.user;
-    const token = signToken(_id);
-    res.header('access_token', token, {httpOnly: true, sameSite: true});
-    res.status(200).json({isAuthenticated : true, user : {username, email}})
+    // const token = signToken(_id);
+    // res.header('access_token', token, {httpOnly: true, sameSite: true});
+    // res.status(200).json({isAuthenticated : true, user : {username, email}})
   } 
 
   //token
