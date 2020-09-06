@@ -23,8 +23,8 @@ router.post('/add',auth,(req,res,next) => {
     })
 
     newPoll.save()
-    // .then(() => res.json('Test Poll working'))
-    // .catch(() => res.status(400).json('error'))
+     .then(() => res.status(200))
+     .catch(() => res.status(400).json('error'))
     next()
 })
 
