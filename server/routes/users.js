@@ -49,7 +49,7 @@ router.post('/login', async (req,res)=> {
 
   //token
 const token = Jwt.sign({_id: User._id}, process.env.TOKEN_SECRET);
-  res.header('auth-token', token).send(token);
+  res.header('access_token', token).send(token);
 })
 
 //log out
