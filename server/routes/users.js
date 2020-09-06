@@ -2,6 +2,7 @@ const router = require('express').Router();
 const passport = require('passport');
 const passportConfig = require('../config/passport')
 const Jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 
 let User = require('../models/Users')
@@ -40,16 +41,29 @@ router.post('/register',(req, res) => {
 
 //login
 router.post('/login', async (req,res)=> {
-  if(req.isAuthenticated()){
-    const {_id, username, email} = req.user;
+  try {
+    const {username, password} = req.body;
     // const token = signToken(_id);
     // res.header('access_token', token, {httpOnly: true, sameSite: true});
     // res.status(200).json({isAuthenticated : true, user : {username, email}})
-  } 
+    if (!username || !password)
+      return res.status(400).json({ msg: "Not all fields have been entered." });
 
-  //token
-const token = Jwt.sign({_id: User._id}, process.env.TOKEN_SECRET);
+    const user = await User.findOne({ username: username });
+    if (!user)
+      return res
+        .status(400)
+        .json({ msg: "No account with this email has been registered." });
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) return res.status(400).json({ msg: "Invalid credentials." });
+
+        const token = Jwt.sign({_id: User._id}, process.env.TOKEN_SECRET);
   res.header('access_token', token).send(token);
+    
+  } catch (err) {
+    res.status(500).json({error: err.message})
+  }
 })
 
 //log out
