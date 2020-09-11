@@ -2,10 +2,13 @@
 
 import axios from 'axios';
 
+const host = 'http://localhost:9000/users';
 
 export const setToken = token => {
     if (token) {
-        axios.defaults.headers.common
+        axios.defaults.headers.common['access_token'] = token
+    } else {
+        delete axios.defaults.headers.common['access_token']
     }
 }
 
