@@ -1,8 +1,20 @@
 import React from 'react';
 import {Provider} from 'react-redux';
+import decode from 'jwt-decode';
 
 import api from '../services/api';
-import {store} from '../store/store'
+import {store} from '../store/store';
+import {setCurrentUser, addError, setToken} from '../store/actions';
+
+if (localStorage.jwtToken) {
+  setToken(localStorage.jwtToken);
+  try{
+    store.dispatch(setCurrentUser(localStorage.jwtToken))
+  } catch(err){
+    store.dispatch(setCurrentUser({}));
+    store.dispatch(addError(err));
+  }
+}
 
 const App = () => {
   return (
